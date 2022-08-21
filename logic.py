@@ -49,3 +49,4 @@ while study_elements:
         print(f'The correct answer is {ans}')
         input('press enter to continue')
         os.system('cls')
+print('You have complted the set!')
