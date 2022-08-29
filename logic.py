@@ -1,52 +1,34 @@
-from random import choice
-from copy import deepcopy
+from random import choice, randrange, shuffle
 import os
-import time
 
-# removes an element from a list
-
-
-def rem(list, phrase):
-    for g in range(len(list)):
-        list[g] = list[g].strip(phrase)
-    return list
+from function import rem, succ, written,multiple_choice
 
 
-# Converts term to definition and definiton to term
-def succ(vocab, label):
-    ind = vocab.index(label)
-    if ind % 2 == 0:
-        return vocab[ind+1]
-    else:
-        return vocab[ind - 1]
-
-
-with open('input.in', 'r') as full_elements:
+# extracts the file information
+with open('test.in', 'r') as full_elements:
     full_elements = full_elements.readlines()
 full_elements = rem(full_elements, '\n')
-
-# removes the spaces
+print(full_elements)
+# removes the extra spaces in the file
 while '' in full_elements:
     full_elements.remove('')
-times = int(input('How many times should the set repeat?\n>'))
+print(full_elements)
+evens = full_elements[::2]
+odds = full_elements[1::2]
+while len(odds) < 4:
+    odds.append(None)
+while len(evens) < 4:
+    evens.append(None)
+# Multiple choice or written?
+#questions_type = input('Mutiple choice or written? m/w\n>')
+questions_type = 'm'
 # Sets how many times you want to study the set
+#times = int(input('How many times should the set repeat?\n>'))
+times = 1
 study_elements = times*full_elements
-print(study_elements)
-while study_elements:
-    question = choice(study_elements)
-    ans = succ(full_elements, question)
-    print(question)
-    ans_player = input('Enter answer\n>')
-    # If the answer is correct
-    if ans_player == ans:
-        study_elements.remove(question)
-        print('Correct!')
-        input('press enter to continue')
-        os.system('cls')
-    # If the answer is wrong
-    else:
-        print('Inorrect...')
-        print(f'The correct answer is {ans}')
-        input('press enter to continue')
-        os.system('cls')
-print('You have complted the set!')
+os.system('cls')
+if questions_type.lower() == 'w':
+    written(study_elements, full_elements)
+elif questions_type.lower() == 'm':
+    multiple_choice(study_elements, full_elements, evens, odds)
+
